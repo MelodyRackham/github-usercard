@@ -3,6 +3,16 @@
            https://api.github.com/users/<your name>
 */
 
+axios.get('https://api.github.com/users/MelodyRackham').then(response => {
+  console.log(response.data);
+  const myInfo = response.data;
+  const cards = document.querySelector('.cards');
+  const newCard = gitCard(myInfo);
+  cards.appendChild(newCard);
+});
+
+// .catch(err => {console.log("oops! You got an error", error)});
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -24,8 +34,6 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
-
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
 
@@ -46,10 +54,72 @@ const followersArray = [];
 
 */
 
-/* List of LS Instructors Github username's: 
-  tetondan
-  dustinmyers
-  justsml
-  luishrd
-  bigknell
-*/
+const cards = document.querySelector('.cards');
+
+function gitCard(myInfo) {
+  // define new elements
+  const card = document.createElement('div');
+  const newImage = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const usersName = document.createElement('h3');
+  const userName = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const gitHubHandle = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+
+  // set up structure of elements
+  card.appendChild(newImage);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(usersName);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  cardInfo.appendChild(gitHubHandle);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+
+  // set class names
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  usersName.classList.add('name');
+  userName.classList.add('username');
+
+  // set text content
+  newImage.src = myInfo.avatar_url;
+  usersName.textContent = myInfo.name;
+  userName.textContent = myInfo.login;
+  location.textContent = `Location: ${myInfo.location}`;
+  profile.textContent = `Profile: ${myInfo.html_url}`;
+  followers.textContent = `Followers: ${myInfo.followers}`;
+  following.textContent = `Following: ${myInfo.following}`;
+  bio.textContent = `Bio: ${myInfo.bio}`;
+
+  return card;
+}
+
+// followers array
+
+const followersArray = [
+  'HarrisonMS',
+  'LoganMReber',
+  'bradzickafoose',
+  'normabunton',
+  'SeeStephSay',
+  'jasminekh96',
+  'JustinTrombley96',
+  'nattroj',
+];
+
+followersArray.forEach(user => {
+  axios.get(`https://api.github.com/users/${user}`).then(response => {
+    console.log(response.data);
+    const homieInfo = response.data;
+    const cards = document.querySelector('.cards');
+    const newCard = gitCard(homieInfo);
+    cards.appendChild(newCard);
+  });
+});
