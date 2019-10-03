@@ -11,7 +11,7 @@ axios.get('https://api.github.com/users/MelodyRackham').then(response => {
   cards.appendChild(newCard);
 });
 
-// .catch(err => console.log("oops! You got an error", error));
+// .catch(err => {console.log("oops! You got an error", error)});
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -33,8 +33,6 @@ axios.get('https://api.github.com/users/MelodyRackham').then(response => {
           Using that array, iterate over it, requesting data for each user, creating a new card for each
           user, and adding that card to the DOM.
 */
-
-const followersArray = [];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -98,15 +96,30 @@ function gitCard(myInfo) {
   profile.textContent = `Profile: ${myInfo.html_url}`;
   followers.textContent = `Followers: ${myInfo.followers}`;
   following.textContent = `Following: ${myInfo.following}`;
-  bio.textContent = myInfo.bio;
+  bio.textContent = `Bio: ${myInfo.bio}`;
 
   return card;
 }
 
-/* List of LS Instructors Github username's: 
-  tetondan
-  dustinmyers
-  justsml
-  luishrd
-  bigknell
-*/
+// followers array
+
+const followersArray = [
+  'HarrisonMS',
+  'LoganMReber',
+  'bradzickafoose',
+  'normabunton',
+  'SeeStephSay',
+  'jasminekh96',
+  'JustinTrombley96',
+  'nattroj',
+];
+
+followersArray.forEach(user => {
+  axios.get(`https://api.github.com/users/${user}`).then(response => {
+    console.log(response.data);
+    const homieInfo = response.data;
+    const cards = document.querySelector('.cards');
+    const newCard = gitCard(homieInfo);
+    cards.appendChild(newCard);
+  });
+});
